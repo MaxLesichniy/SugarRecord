@@ -1,15 +1,15 @@
 import Foundation
 import CoreData
 
-public class CoreDataDefaultStorage: Storage {
+open class CoreDataDefaultStorage: Storage {
     
     // MARK: - Attributes
     
-    internal let store: CoreDataStore
-    internal var objectModel: NSManagedObjectModel! = nil
-    internal var persistentStore: NSPersistentStore! = nil
-    internal var persistentStoreCoordinator: NSPersistentStoreCoordinator! = nil
-    internal var rootSavingContext: NSManagedObjectContext! = nil
+    public let store: CoreDataStore
+    public internal(set) var objectModel: NSManagedObjectModel! = nil
+    public internal(set) var persistentStore: NSPersistentStore! = nil
+    public internal(set) var persistentStoreCoordinator: NSPersistentStoreCoordinator! = nil
+    public internal(set) var rootSavingContext: NSManagedObjectContext! = nil
 
     
     // MARK: - Storage conformance
@@ -111,27 +111,19 @@ public class CoreDataDefaultStorage: Storage {
     
     // MARK: - Init
     
-    public convenience init(store: CoreDataStore, model: CoreDataObjectModel, migrate: Bool = true) throws {
-        try self.init(store: store, model: model, migrate: migrate, versionController: VersionController())
-    }
-    
-    internal init(store: CoreDataStore, model: CoreDataObjectModel, migrate: Bool = true, versionController: VersionController) throws {
+    public init(store: CoreDataStore, model: CoreDataObjectModel, migrate: Bool = true) throws {
         self.store   = store
         self.objectModel = model.model()!
         self.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: objectModel)
         self.persistentStore = try cdInitializeStore(store: store, storeCoordinator: persistentStoreCoordinator, migrate: migrate)
         self.rootSavingContext = cdContext(withParent: .coordinator(self.persistentStoreCoordinator), concurrencyType: .privateQueueConcurrencyType, inMemory: false)
         self.mainContext = cdContext(withParent: .context(self.rootSavingContext), concurrencyType: .mainQueueConcurrencyType, inMemory: false)
-        #if DEBUG
-        versionController.check()
-        #endif
     }
-    
     
     // MARK: - Public
     
     @available(OSX 10.12, *)
-    public func observable<T: NSManagedObject>(request: FetchRequest<T>) -> RequestObservable<T> where T:Equatable {
+    public func observable<T: NSManagedObject>(request: FetchRequest<T>) -> RequestObservable<T> {
         return CoreDataObservable(request: request, context: self.mainContext as! NSManagedObjectContext)
     }
     

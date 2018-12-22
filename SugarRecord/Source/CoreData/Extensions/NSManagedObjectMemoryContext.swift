@@ -1,9 +1,9 @@
 import Foundation
 import CoreData
 
-class NSManagedObjectMemoryContext: NSManagedObjectContext {
+public class NSManagedObjectMemoryContext: NSManagedObjectContext {
     
-    override func save() throws {
+    override public func save() throws {
         // Do nothing
     }
 

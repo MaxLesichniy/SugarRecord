@@ -6,7 +6,7 @@ public enum CoreDataOptions {
     case basic
     case migration
     
-    func dict() -> [String: AnyObject] {
+    public func dict() -> [String: AnyObject] {
         switch self {
         case .basic:
             var sqliteOptions: [String: String] = [String: String] ()
