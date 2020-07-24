@@ -16,9 +16,9 @@ Pod::Spec.new do |s|
     spec.frameworks = ['CoreData']
   end
 
-  foundation_dependencies = lambda do |spec|
-    spec.dependency "Result", "~> 3.0"
-  end
+#  foundation_dependencies = lambda do |spec|
+#    spec.dependency "Result", "~> 3.0"
+#  end
 
   all_platforms = lambda do |spec|
     spec.ios.deployment_target = "8.0"
@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
     spec.source_files = source_files
     spec.exclude_files =  excluded_icloud_files
     coredata_dependencies.call(spec)
-    foundation_dependencies.call(spec)
+#    foundation_dependencies.call(spec)
     all_platforms.call(spec)
   end
 
@@ -42,7 +42,7 @@ Pod::Spec.new do |s|
     source_files = ['SugarRecord/Source/Foundation/**/*.{swift}', 'SugarRecord/Source/CoreData/**/*.{swift}']
     spec.source_files = source_files
     coredata_dependencies.call(spec)
-    foundation_dependencies.call(spec)
+#    foundation_dependencies.call(spec)
   end
 
 end
